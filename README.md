@@ -1,7 +1,7 @@
 # OrganizationCard
 
 1. Открываем [docker-compose.yml](docker-compose.yml) - поднимаем psql
-2. запускаем проект
+2. запускаем проект под профилем 'local'
 
 API:
 http://localhost:7070/webapp/directors - получить всех директоров
