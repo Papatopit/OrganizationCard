@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  psql:
+    image: postgres:16.1
+    container_name: organization_db
+    ports:
+      - "54321:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: organizations_db
+#    volumes:
+#      - database-data:/var/lib/postgresql/data/

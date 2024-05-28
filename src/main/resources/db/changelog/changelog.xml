@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <!-- Create the Organizations table -->
+    <changeSet id="1" author="Kolokolnin">
+        <createTable tableName="organizations">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="varchar(255)"/>
+            <column name="short_name" type="varchar(255)"/>
+            <column name="inn" type="varchar(255)"/>
+            <column name="ogrn" type="varchar(255)"/>
+            <column name="postal_address" type="varchar(255)"/>
+            <column name="juridical_address" type="varchar(255)"/>
+            <column name="director_info_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="filial_organization_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create the Director table -->
+    <changeSet id="2" author="Kolokolnin">
+        <createTable tableName="director">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(255)"/>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="patronymic" type="varchar(255)"/>
+            <column name="date_of_birth" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create the FilialOrganization table -->
+    <changeSet id="3" author="Kolokolnin">
+        <createTable tableName="filial_organization">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="varchar(255)"/>
+            <column name="postal_address" type="varchar(255)"/>
+            <column name="director_info_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organization_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Add foreign key constraint to Organization table -->
+    <changeSet id="4" author="Kolokolnin">
+        <addForeignKeyConstraint baseTableName="organizations" baseColumnNames="director_info_id"
+                                 referencedTableName="director" referencedColumnNames="id"
+                                 constraintName="fk_organization_to_director"/>
+    </changeSet>
+
+    <!-- Add primary key and foreign key constraints to FilialOrganization table -->
+    <changeSet id="5" author="Kolokolnin">
+        <addUniqueConstraint tableName="filial_organization" columnNames="id"/>
+        <addForeignKeyConstraint baseTableName="filial_organization" baseColumnNames="director_info_id"
+                                 referencedTableName="director" referencedColumnNames="id"
+                                 constraintName="fk_filial_organization_to_director"/>
+        <addForeignKeyConstraint baseTableName="filial_organization" baseColumnNames="organization_id"
+                                 referencedTableName="organizations" referencedColumnNames="id"
+                                 constraintName="fk_filial_organization_to_organization"/>
+    </changeSet>
+
+    <changeSet id="6" author="Kolokolnin">
+        <sql>
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (1, 'Cornelle', 'Frasier', 'Yetty', '2023-02-16 05:07:01');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (2, 'Emile', 'Matteo', 'Olly', '2021-05-06 08:08:28');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (3, 'Dacia', 'James', 'Simona', '2022-12-17 23:34:01');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (4, 'Francesca', 'Clay', 'Jordain', '2021-09-04 20:30:59');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (5, 'Bibbie', 'Rand', 'Kippie', '2022-04-19 06:18:02');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (6, 'Preston', 'Errick', 'Norrie', '2022-07-05 14:56:44');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (7, 'Ernaline', 'Algernon', 'Kiersten', '2023-01-12 16:05:42');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (8, 'Elita', 'Jethro', 'Conchita', '2023-04-05 11:33:29');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (9, 'Marinna', 'Alfonso', 'Mersey', '2023-10-30 18:21:24');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (10, 'Onofredo', 'Gordon', 'Dorothea', '2021-07-12 09:40:15');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (11, 'Barret', 'Hyman', 'Lilith', '2023-06-02 00:50:26');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (12, 'Salomone', 'Teodoor', 'Annetta', '2022-07-28 18:50:18');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (13, 'Emilie', 'Neal', 'Cam', '2022-04-06 11:01:47');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (14, 'Marketa', 'Harris', 'Kellen', '2022-08-20 04:16:24');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (15, 'Sande', 'Vale', 'Dredi', '2023-08-22 20:06:21');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (16, 'Tilda', 'Rodolfo', 'Dione', '2022-04-17 12:27:58');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (17, 'Hanni', 'Raddie', 'Jannel', '2021-09-05 09:41:08');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (18, 'Quintana', 'Courtney', 'Pauli', '2022-03-30 16:03:41');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (19, 'Aurea', 'Ario', 'Tamera', '2021-12-11 21:20:40');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (20, 'Liz', 'Brant', 'Christen', '2024-02-26 15:43:26');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (21, 'Mirilla', 'Zachariah', 'Lissie', '2022-03-22 16:32:33');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (22, 'Leia', 'See', 'Sisely', '2023-09-06 21:46:12');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (23, 'Emmey', 'Herschel', 'Brittaney', '2023-01-30 21:26:33');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (24, 'Erika', 'Jerrie', 'Claudina', '2022-11-10 14:05:24');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (25, 'Bink', 'Thedrick', 'Abigael', '2021-03-08 00:17:28');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (26, 'Phillida', 'Tully', 'Alejandra', '2024-02-16 04:52:10');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (27, 'Jorgan', 'Octavius', 'Estelle', '2023-05-09 03:10:09');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (28, 'Ava', 'Gaultiero', 'Ofelia', '2021-01-25 02:12:26');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (29, 'Clarissa', 'Pasquale', 'Winifred', '2023-01-06 05:15:13');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (30, 'Rowland', 'Fair', 'Blondell', '2022-03-26 10:15:04');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (31, 'Marijo', 'Sylas', 'Nicole', '2024-02-22 17:41:45');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (32, 'Madelena', 'Dar', 'Olivette', '2023-01-09 21:15:01');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (33, 'Ferd', 'Gal', 'Kriste', '2021-03-16 23:40:02');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (34, 'Hollis', 'Monte', 'Rora', '2021-05-23 23:13:52');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (35, 'Lindsay', 'Logan', 'Juli', '2022-08-29 15:00:56');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (36, 'Mara', 'Lezley', 'Flory', '2023-05-31 03:17:34');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (37, 'Carmella', 'Matthieu', 'Sidonia', '2021-09-16 20:11:41');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (38, 'Lianne', 'Sascha', 'Costanza', '2022-12-29 01:50:56');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (39, 'Alisha', 'Lynn', 'Bernadene', '2021-04-04 09:56:01');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (40, 'Merrie', 'Leonardo', 'Marieann', '2024-01-10 06:44:51');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (41, 'Ula', 'Enoch', 'Leola', '2023-12-30 09:00:17');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (42, 'Ethyl', 'Townsend', 'Hermina', '2022-02-26 08:19:00');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (43, 'Demetrius', 'Lloyd', 'Karleen', '2023-03-13 09:14:24');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (44, 'Ike', 'Trefor', 'Estella', '2021-05-19 07:44:30');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (45, 'Gregor', 'Avram', 'Kathlin', '2023-05-03 10:00:38');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (46, 'Bran', 'Bartel', 'Rose', '2023-05-03 13:07:05');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (47, 'Mercy', 'Steward', 'Wallis', '2024-03-28 18:43:40');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (48, 'Candace', 'Llewellyn', 'Gene', '2022-07-24 12:34:28');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (49, 'Merle', 'Raleigh', 'Maddie', '2021-06-11 08:39:34');
+            insert into director (id, surname, first_name, patronymic, date_of_birth) values (50, 'Shelli', 'Baird', 'Carlen', '2021-10-05 13:53:43');
+
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (1, 'Mydo', 'Feil LLC', '111-111-222-555-8777', null, '574 Monument Way', 1, 1, 'Fallview');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (2, 'Skalith', 'Gleichner, MacGyver and Kulas', '111-111-222-555-8777', null, '53 Tennessee Lane', 2, 2, 'Towne');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (3, 'Realbuzz', 'Murray Group', '111-111-222-555-8777', null, '6499 Merry Hill', 3, null, 'Pepper Wood');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (4, 'Snaptags', 'Cartwright LLC', '111-111-222-555-8777', '24589672895762745', '0 Spohn Hill', 4, null, 'Ruskin');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (5, 'Aimbu', 'Tremblay and Sons', '111-111-222-555-8777', null, '407 Schmedeman Plaza', 5, null, 'Anderson');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (6, 'Zoombeat', 'Crooks, Crist and Rath', '111-111-222-555-8777', '24589672895762745', '41986 Nelson Park', 6, null, 'Florence');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (7, 'Realbuzz', 'Turcotte Group', '111-111-222-555-8777', null, '88351 Lakewood Park', 7, null, 'Hintze');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (8, 'Fivechat', 'Legros LLC', '111-111-222-555-8777', '24589672895762745', '81 Evergreen Point', 8, 8, 'Lighthouse Bay');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (9, 'Yombu', 'Rempel, Schoen and Wunsch', '111-111-222-555-8777', null, '3048 Graceland Center', 9, 9, 'Crest Line');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (10, 'Voonte', 'Koelpin Group', '111-111-222-555-8777', null, '0 Sachs Park', 10, null, 'Katie');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (11, 'Dablist', 'Nader-Stroman', '111-111-222-555-8777', null, '9 Dorton Hill', 11, null, 'Wayridge');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (12, 'Zooxo', 'Fay-Ebert', '111-111-222-555-8777', null, '31 Sherman Lane', 12, 12, 'Fulton');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (13, 'Npath', 'Herzog, Kub and Keeling', '111-111-222-555-8777', '24589672895762745', '7 Erie Junction', 13, 13, 'Oriole');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (14, 'Yata', 'Hansen-Steuber', '111-111-222-555-8777', '24589672895762745', '4953 Lake View Lane', 14, 14, 'Monica');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (15, 'Yombu', 'Jacobs Group', '111-111-222-555-8777', null, '17 Homewood Alley', 15, null, 'Lotheville');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (16, 'Jaxbean', 'Kshlerin Inc', '111-111-222-555-8777', '24589672895762745', '22387 Melody Place', 16, 16, 'Tomscot');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (17, 'Katz', 'Lesch-Feeney', '111-111-222-555-8777', '24589672895762745', '23629 Jay Drive', 17, 17, 'Vernon');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (18, 'Thoughtbridge', 'Torphy, Marvin and Lynch', '111-111-222-555-8777', null, '78 Shoshone Pass', 18, null, 'John Wall');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (19, 'Lajo', 'Pollich, Goyette and Hand', '111-111-222-555-8777', null, '0 Talmadge Crossing', 19, null, '2nd');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (20, 'Kwimbee', 'Bogisich, Hane and Torphy', '111-111-222-555-8777', '24589672895762745', '6845 Waubesa Drive', 20, 20, 'Sheridan');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (21, 'Babbleblab', 'Cole, Adams and Hyatt', '111-111-222-555-8777', null, '829 Moose Crossing', 21, 21, 'Ronald Regan');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (22, 'Rooxo', 'Mitchell and Sons', '111-111-222-555-8777', '24589672895762745', '53 Pawling Street', 22, 22, 'Shoshone');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (23, 'Oozz', 'Buckridge, Satterfield and Strosin', '111-111-222-555-8777', '24589672895762745', '7375 Donald Point', 23, 23, 'Meadow Vale');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (24, 'Wikibox', 'Corkery Inc', '111-111-222-555-8777', null, '624 Ridgeview Pass', 24, 24, 'Morrow');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (25, 'Jaxnation', 'Nicolas-Batz', '111-111-222-555-8777', null, '0077 Londonderry Point', 25, 25, 'Melby');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (26, 'Feedfish', 'Powlowski and Sons', '111-111-222-555-8777', null, '972 Haas Street', 26, null, 'Coolidge');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (27, 'Flipbug', 'Hoeger Inc', '111-111-222-555-8777', null, '758 Harbort Plaza', 27, null, 'Michigan');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (28, 'Lazz', 'Rosenbaum-Bosco', '111-111-222-555-8777', null, '5471 Merry Trail', 28, null, 'Main');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (29, 'Skyble', 'Satterfield-Abshire', '111-111-222-555-8777', null, '71 Mitchell Point', 29, null, 'Kenwood');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (30, 'Bluezoom', 'Pfannerstill, Kohler and Parker', '111-111-222-555-8777', null, '123 Reinke Point', 30, null, 'Dottie');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (31, 'Wordtune', 'Rodriguez, Gutkowski and Brakus', '111-111-222-555-8777', '24589672895762745', '94356 Chive Plaza', 31, 31, 'Lukken');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (32, 'Twitterlist', 'Donnelly LLC', '111-111-222-555-8777', null, '2332 Mcguire Way', 32, null, 'Morningstar');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (33, 'Dynazzy', 'Graham, Raynor and Heathcote', '111-111-222-555-8777', null, '866 Dunning Terrace', 33, 33, 'David');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (34, 'Katz', 'Will-Bahringer', '111-111-222-555-8777', null, '999 Commercial Pass', 34, 34, 'Cardinal');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (35, 'Tagfeed', 'Wiegand and Sons', '111-111-222-555-8777', null, '09 Eagan Way', 35, 35, 'Bunker Hill');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (36, 'Leexo', 'O''Keefe, Purdy and Quitzon', '111-111-222-555-8777', '24589672895762745', '3347 Kipling Center', 36, null, 'Rowland');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (37, 'Mudo', 'O''Conner and Sons', '111-111-222-555-8777', null, '7 Browning Center', 37, null, 'Derek');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (38, 'Aimbu', 'Kassulke and Sons', '111-111-222-555-8777', null, '49115 Spenser Pass', 38, 38, 'Tony');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (39, 'Skimia', 'McDermott-Lubowitz', '111-111-222-555-8777', null, '0 Bultman Court', 39, 39, 'Chive');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (40, 'Topicstorm', 'Fay-West', '111-111-222-555-8777', null, '41 Utah Avenue', 40, 40, 'Atwood');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (41, 'Ooba', 'Hettinger-Kihn', '111-111-222-555-8777', '24589672895762745', '48472 Nevada Junction', 41, null, 'Independence');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (42, 'Thoughtblab', 'Lakin, Reichel and Ondricka', '111-111-222-555-8777', '24589672895762745', '12276 Delaware Alley', 42, null, 'Milwaukee');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (43, 'Quaxo', 'Littel-Lakin', '111-111-222-555-8777', null, '0 Brentwood Junction', 43, 43, 'Barby');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (44, 'Roomm', 'O''Reilly, Mertz and D''Amore', '111-111-222-555-8777', null, '30323 Anhalt Trail', 44, null, 'Surrey');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (45, 'Abatz', 'Jenkins-Douglas', '111-111-222-555-8777', null, '4 Cherokee Terrace', 45, 45, 'Melvin');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (46, 'Dabtype', 'Muller-Wiza', '111-111-222-555-8777', '24589672895762745', '3953 Killdeer Circle', 46, null, 'Lien');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (47, 'Einti', 'Jacobson and Sons', '111-111-222-555-8777', '24589672895762745', '12645 Carberry Place', 47, null, 'Muir');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (48, 'Agimba', 'Murphy Group', '111-111-222-555-8777', '24589672895762745', '94 Fremont Court', 48, 48, 'Sage');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (49, 'Wordpedia', 'Tillman and Sons', '111-111-222-555-8777', null, '268 Ilene Avenue', 49, 49, 'Northview');
+            insert into organizations (id, full_name, short_name, inn, ogrn, juridical_address, director_info_id, filial_organization_id, postal_address) values (50, 'Browsecat', 'Lemke and Sons', '111-111-222-555-8777', '24589672895762745', '21131 Melvin Court', 50, null, 'Holmberg');
+
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (1, 'Bluezoom', 'Apt 1538', 1, 1);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (2, 'Vinder', 'Suite 9', 2, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (3, 'Twitterlist', 'Apt 147', 3, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (4, 'Photobug', 'PO Box 53794', 4, 4);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (5, 'Mudo', 'PO Box 46938', 5, 5);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (6, 'Quimba', 'Suite 63', 6, 6);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (7, 'Topiclounge', 'PO Box 29662', 7, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (8, 'Babbleblab', 'Suite 65', 8, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (9, 'Katz', 'Apt 1011', 9, 9);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (10, 'Feedspan', 'PO Box 38294', 10, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (11, 'Meetz', 'Room 983', 11, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (12, 'Skibox', 'Suite 55', 12, 12);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (13, 'Quamba', 'Suite 82', 13, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (14, 'Fanoodle', 'Apt 1988', 14, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (15, 'Gigabox', 'PO Box 26271', 15, 15);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (16, 'Riffpath', 'Apt 940', 16, 16);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (17, 'Skyvu', '17th Floor', 17, 17);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (18, 'Oozz', 'PO Box 34219', 18, 18);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (19, 'Shuffledrive', 'Apt 1984', 19, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (20, 'Skilith', 'Suite 34', 20, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (21, 'Realpoint', 'Room 76', 21, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (22, 'Dynabox', 'PO Box 34980', 22, 22);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (23, 'Flipstorm', 'Room 1457', 23, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (24, 'Blogtags', '19th Floor', 24, 24);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (25, 'Jabbertype', 'Room 1035', 25, 25);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (26, 'Devbug', '5th Floor', 26, 26);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (27, 'Centizu', 'Apt 28', 27, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (28, 'Shuffledrive', '11th Floor', 28, 28);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (29, 'Babbleopia', 'Apt 1511', 29, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (30, 'Realcube', 'Room 853', 30, 30);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (31, 'Miboo', '17th Floor', 31, 31);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (32, 'Meezzy', '20th Floor', 32, 32);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (33, 'Skinte', 'Suite 91', 33, 33);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (34, 'Dabshots', 'Suite 79', 34, 34);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (35, 'Skajo', '17th Floor', 35, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (36, 'Yamia', 'Apt 1374', 36, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (37, 'Realcube', 'Room 979', 37, 37);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (38, 'Voomm', '9th Floor', 38, 38);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (39, 'Oba', 'PO Box 759', 39, 39);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (40, 'Mycat', 'Room 374', 40, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (41, 'Feednation', 'Suite 87', 41, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (42, 'Skimia', 'PO Box 66327', 42, 42);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (43, 'Jatri', 'Apt 1747', 43, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (44, 'Zooveo', 'PO Box 77655', 44, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (45, 'Chatterpoint', 'PO Box 61054', 45, 45);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (46, 'Voomm', 'Suite 93', 46, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (47, 'Tanoodle', 'Apt 702', 47, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (48, 'Eidel', 'PO Box 17672', 48, 48);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (49, 'Quatz', 'Apt 1410', 49, null);
+            insert into filial_organization (id, full_name, postal_address, director_info_id, organization_id) values (50, 'Ailane', 'Apt 1452', 50, null);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
